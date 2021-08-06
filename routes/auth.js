@@ -79,6 +79,10 @@ passport.use(new GoogleStrategy({
 }))
 
 router.use((req, res, next) => {
+	// if ('user' in req.session) {
+  //   res.locals.user = req.session.user
+  // }
+
 	if (req.user) {
 		res.locals.user = req.user
 		if (!req.session.role) {
@@ -111,6 +115,18 @@ router.post('/login', passport.authenticate('local', {
 	failureRedirect: '/login',
 	failureFlash: false
 }))
+
+// app.post('/login', async (req, res) => {
+//   const user = await User.findOne({ username: req.body.username })
+//   const isValid = await user.checkPassword(req.body.password)
+
+//   if (isValid) {
+//     req.session.user = user
+//     res.redirect('/restrito/noticias')
+//   } else {
+//     res.redirect('/login')
+//   }
+// })
 
 router.get('/facebook', passport.authenticate('facebook'))
 router.get('/facebook/callback', passport.authenticate('facebook', {
